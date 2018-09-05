@@ -6,10 +6,8 @@ class Solver(object):
     def solve(self):
         for i in xrange(9):
             for j in xrange(9):
-                row = self.board[i]
-                missing_from_row = self.missing(row)
-                column = [board_row[j] for board_row in self.board]
-                missing_from_column = self.missing(column)
+                missing_from_row = self.missing(self.row(i, j))
+                missing_from_column = self.missing(self.column(i, j))
                 missing_from_both = [
                     digit for digit in missing_from_row
                     if digit in missing_from_column]
@@ -18,6 +16,12 @@ class Solver(object):
                     self.board[i][j] = missing_from_both[0]
 
         return self.board
+
+    def row(self, i, j):
+        return self.board[i]
+
+    def column(self, i, j):
+        return [board_row[j] for board_row in self.board]
 
     def missing(self, portion):
         one_to_nine = range(1, 10)
