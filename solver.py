@@ -4,18 +4,18 @@ class Solver(object):
         self.board = board
 
     def solve(self):
-        for i, row in enumerate(self.board):
-            missing_from_row = self.missing(row)
-            if len(missing_from_row) == 1:
-                self.board[i] = [
-                    digit if digit else missing_from_row[0]
-                    for digit in row]
+        for i in xrange(9):
+            for j in xrange(9):
+                row = self.board[i]
+                missing_from_row = self.missing(row)
+                column = [board_row[j] for board_row in self.board]
+                missing_from_column = self.missing(column)
+                missing_from_both = [
+                    digit for digit in missing_from_row
+                    if digit in missing_from_column]
 
-        for j in xrange(9):
-            column = [row[j] for row in self.board]
-            missing_from_column = self.missing(column)
-            if len(missing_from_column) == 1:
-                self.board[column.index(None)][j] = missing_from_column[0]
+                if len(missing_from_both) == 1:
+                    self.board[i][j] = missing_from_both[0]
 
         return self.board
 

@@ -36,3 +36,11 @@ class SolverTests(TestCase):
         initial_board[0] = [None] * 9
         solver = Solver(initial_board)
         self.assertEqual(solver.solve(), self.solution)
+
+    def test_missing_two_digits_each_row_and_column(self):
+        initial_board = deepcopy(self.solution)
+        initial_board[0][0] = initial_board[0][1] = None
+        initial_board[1][0] = initial_board[1][1] = None
+
+        solver = Solver(initial_board)
+        self.assertEqual(solver.solve(), self.solution)
