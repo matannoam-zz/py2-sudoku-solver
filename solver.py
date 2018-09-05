@@ -11,6 +11,12 @@ class Solver(object):
                     digit if digit else missing_from_row[0]
                     for digit in row]
 
+        for j in xrange(9):
+            column = [row[j] for row in self.board]
+            missing_from_column = self.missing(column)
+            if len(missing_from_column) == 1:
+                self.board[column.index(None)][j] = missing_from_column[0]
+
         return self.board
 
     def missing(self, portion):

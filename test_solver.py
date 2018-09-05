@@ -30,3 +30,9 @@ class SolverTests(TestCase):
             row[0] = None
         solver = Solver(initial_board)
         self.assertEqual(solver.solve(), self.solution)
+
+    def test_missing_single_digits_from_columns(self):
+        initial_board = deepcopy(self.solution)
+        initial_board[0] = [None] * 9
+        solver = Solver(initial_board)
+        self.assertEqual(solver.solve(), self.solution)
