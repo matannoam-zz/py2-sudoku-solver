@@ -5,6 +5,7 @@ class Solver(object):
 
     def __init__(self, board):
         self.board = deepcopy(board)
+        self.possibilities = Possibilties(self.board)
 
     def solve(self):
         changed = True
@@ -25,7 +26,24 @@ class Solver(object):
                 return True
         return False
 
-    def get_possibilities(self, i, j):
+    def sets_board_if_only_one_possible(self, i, j):
+        possibilities = self.possibilities.get(i, j)
+        if len(possibilities) == 1:
+            self.board[i][j] = possibilities[0]
+            return True
+        else:
+            return False
+
+
+class Possibilties(object):
+
+    def __init__(self, board):
+        self.board = board
+
+    def get(self, i, j):
+        if self.board[i][j]:
+            return [self.board[i][j]]
+
         missing_from_row = self.missing(self.row_indices_for_space(i, j))
         missing_from_column = self.missing(self.column_indices_for_space(i, j))
         missing_from_nonant = self.missing(self.nonant_indices_for_space(i, j))
@@ -35,13 +53,11 @@ class Solver(object):
             if digit in missing_from_column and
             digit in missing_from_nonant]
 
-    def sets_board_if_only_one_possible(self, i, j):
-        possibilities = self.get_possibilities(i, j)
-        if len(possibilities) == 1:
-            self.board[i][j] = possibilities[0]
-            return True
-        else:
-            return False
+    def missing(self, indices):
+        one_to_nine = range(1, 10)
+        return [
+            digit for digit in one_to_nine
+            if digit not in self.board_spaces(indices)]
 
     def row_indices_for_space(self, i, j):
         return [(i, k) for k in xrange(9)]
@@ -57,12 +73,6 @@ class Solver(object):
             (x, y)
             for x in xrange(nonant_x, nonant_x + 3)
             for y in xrange(nonant_y, nonant_y + 3)]
-
-    def missing(self, indices):
-        one_to_nine = range(1, 10)
-        return [
-            digit for digit in one_to_nine
-            if digit not in self.board_spaces(indices)]
 
     def board_spaces(self, indices):
         return [self.board[i[0]][i[1]] for i in indices]
