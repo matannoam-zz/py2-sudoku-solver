@@ -46,3 +46,11 @@ class SolverTests(TestCase):
         initial_board[1][0] = initial_board[1][1] = None
 
         self.assert_finds_solution(initial_board)
+
+    def test_missing_single_digits_from_nonants(self):
+        initial_board = deepcopy(self.solution)
+        for i in [0, 4, 8]:
+            for j in [0, 4, 8]:
+                initial_board[i][j] = None
+
+        self.assert_finds_solution(initial_board)
