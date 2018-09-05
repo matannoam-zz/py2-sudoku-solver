@@ -25,7 +25,7 @@ class Solver(object):
                 return True
         return False
 
-    def possibilities(self, i, j):
+    def get_possibilities(self, i, j):
         missing_from_row = self.missing(self.row_indices_for_space(i, j))
         missing_from_column = self.missing(self.column_indices_for_space(i, j))
         missing_from_nonant = self.missing(self.nonant_indices_for_space(i, j))
@@ -36,7 +36,7 @@ class Solver(object):
             digit in missing_from_nonant]
 
     def sets_board_if_only_one_possible(self, i, j):
-        possibilities = self.possibilities(i, j)
+        possibilities = self.get_possibilities(i, j)
         if len(possibilities) == 1:
             self.board[i][j] = possibilities[0]
             return True
