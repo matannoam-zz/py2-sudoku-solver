@@ -1,7 +1,10 @@
+from copy import deepcopy
+
+
 class Solver(object):
 
     def __init__(self, board):
-        self.board = board
+        self.board = deepcopy(board)
 
     def solve(self):
         changed = True
