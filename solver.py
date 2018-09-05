@@ -4,14 +4,22 @@ class Solver(object):
         self.board = board
 
     def solve(self):
-        for i in xrange(9):
-            for j in xrange(9):
-                if self.board[i][j] is None:
-                    self.solve_space(i, j)
+        changed = True
+        while changed:
+            changed = self.changes_one_board_pass()
 
         return self.board
 
-    def solve_space(self, i, j):
+    def changes_one_board_pass(self):
+        changed = False
+        for i in xrange(9):
+            for j in xrange(9):
+                if self.board[i][j] is None:
+                    if self.changes_space(i, j):
+                        changed = True
+        return changed
+
+    def changes_space(self, i, j):
         missing_from_row = self.missing(self.row_for_space(i, j))
         missing_from_column = self.missing(self.column_for_space(i, j))
         missing_from_nonant = self.missing(self.nonant_for_space(i, j))
@@ -23,6 +31,9 @@ class Solver(object):
 
         if len(missing_from_all) == 1:
             self.board[i][j] = missing_from_all[0]
+            return True
+        else:
+            return False
 
     def row_for_space(self, i, j):
         return self.board[i]

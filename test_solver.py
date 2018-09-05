@@ -54,3 +54,13 @@ class SolverTests(TestCase):
                 initial_board[i][j] = None
 
         self.assert_finds_solution(initial_board)
+
+    def test_needs_multiple_passes(self):
+        initial_board = deepcopy(self.solution)
+        for i in [0, 4, 8]:
+            for j in [0, 4, 8]:
+                initial_board[i][j] = None
+
+        initial_board[2][2] = initial_board[6][6] = None
+
+        self.assert_finds_solution(initial_board)
