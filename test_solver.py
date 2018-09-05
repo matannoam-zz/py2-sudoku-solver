@@ -19,28 +19,30 @@ class SolverTests(TestCase):
             [6, 4, 5, 9, 7, 8, 3, 1, 2],
             [9, 7, 8, 3, 1, 2, 6, 4, 5]]
 
-    def test_returns_input_for_solved_puzzle(self):
-        initial_board = deepcopy(self.solution)
+    def assert_finds_solution(self, initial_board):
         solver = Solver(initial_board)
         self.assertEqual(solver.solve(), self.solution)
+
+    def test_returns_input_for_solved_puzzle(self):
+        initial_board = deepcopy(self.solution)
+        self.assert_finds_solution(initial_board)
 
     def test_missing_single_digits_from_rows(self):
         initial_board = deepcopy(self.solution)
         for row in initial_board:
             row[0] = None
-        solver = Solver(initial_board)
-        self.assertEqual(solver.solve(), self.solution)
+
+        self.assert_finds_solution(initial_board)
 
     def test_missing_single_digits_from_columns(self):
         initial_board = deepcopy(self.solution)
         initial_board[0] = [None] * 9
-        solver = Solver(initial_board)
-        self.assertEqual(solver.solve(), self.solution)
+
+        self.assert_finds_solution(initial_board)
 
     def test_missing_two_digits_each_row_and_column(self):
         initial_board = deepcopy(self.solution)
         initial_board[0][0] = initial_board[0][1] = None
         initial_board[1][0] = initial_board[1][1] = None
 
-        solver = Solver(initial_board)
-        self.assertEqual(solver.solve(), self.solution)
+        self.assert_finds_solution(initial_board)
