@@ -22,7 +22,8 @@ class Solver(object):
 
     def sets_space(self, i, j):
         if self.board[i][j] is None:
-            if self.sets_board_if_only_one_possible(i, j):
+            if (self.sets_board_if_only_one_possible(i, j) or
+                    self.sets_board_if_digit_needed(i, j)):
                 return True
         return False
 
@@ -34,11 +35,30 @@ class Solver(object):
         else:
             return False
 
+    def sets_board_if_digit_needed(self, i, j):
+        row_possibilities = self.possibilities.get_by_list(
+            Indices.row_indices_without_space(i, j))
+        column_possibilities = self.possibilities.get_by_list(
+            Indices.column_indices_without_space(i, j))
+        nonant_possiblities = self.possibilities.get_by_list(
+            Indices.nonant_indices_without_space(i, j))
+
+        for digit in self.possibilities.get(i, j):
+            if not (Possibilties.is_digit_in(digit, row_possibilities) and
+                    Possibilties.is_digit_in(digit, column_possibilities) and
+                    Possibilties.is_digit_in(digit, nonant_possiblities)):
+                self.board[i][j] = digit
+                return True
+        return False
+
 
 class Possibilties(object):
 
     def __init__(self, board):
         self.board = board
+
+    def get_by_list(self, indices):
+        return [self.get(i[0], i[1]) for i in indices]
 
     def get(self, i, j):
         if self.board[i][j]:
@@ -65,6 +85,10 @@ class Possibilties(object):
     def board_spaces(self, indices):
         return [self.board[i[0]][i[1]] for i in indices]
 
+    @classmethod
+    def is_digit_in(cls, digit, space_possiblities):
+        return any(digit in p for p in space_possiblities)
+
 
 class Indices(object):
 
@@ -85,3 +109,22 @@ class Indices(object):
             (x, y)
             for x in xrange(nonant_x, nonant_x + 3)
             for y in xrange(nonant_y, nonant_y + 3)]
+
+    @classmethod
+    def row_indices_without_space(cls, i, j):
+        return [(i, k) for k in xrange(9) if k != j]
+
+    @classmethod
+    def column_indices_without_space(self, i, j):
+        return [(k, j) for k in xrange(9) if k != i]
+
+    @classmethod
+    def nonant_indices_without_space(self, i, j):
+        nonant_x = (i / 3) * 3
+        nonant_y = (j / 3) * 3
+
+        return [
+            (x, y)
+            for x in xrange(nonant_x, nonant_x + 3)
+            for y in xrange(nonant_y, nonant_y + 3)
+            if x != i or y != j]

@@ -64,3 +64,20 @@ class SolverTests(TestCase):
         initial_board[2][2] = initial_board[6][6] = None
 
         self.assert_finds_solution(initial_board)
+
+    def test_requires_digit(self):
+        initial_board = [
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, 1, None, None, None, None, None],
+            [None, None, None, None, None, None, 1, None, None],
+            [None, None, 1, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, 1, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None]]
+
+        solver = Solver(initial_board)
+        partial_solution = deepcopy(initial_board)
+        partial_solution[0][0] = 1
+        self.assertEqual(solver.solve(), partial_solution)
