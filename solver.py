@@ -44,9 +44,12 @@ class Possibilties(object):
         if self.board[i][j]:
             return [self.board[i][j]]
 
-        missing_from_row = self.missing(self.row_indices_for_space(i, j))
-        missing_from_column = self.missing(self.column_indices_for_space(i, j))
-        missing_from_nonant = self.missing(self.nonant_indices_for_space(i, j))
+        missing_from_row = self.missing(
+            Indices.row_indices_for_space(i, j))
+        missing_from_column = self.missing(
+            Indices.column_indices_for_space(i, j))
+        missing_from_nonant = self.missing(
+            Indices.nonant_indices_for_space(i, j))
 
         return [
             digit for digit in missing_from_row
@@ -59,12 +62,21 @@ class Possibilties(object):
             digit for digit in one_to_nine
             if digit not in self.board_spaces(indices)]
 
-    def row_indices_for_space(self, i, j):
+    def board_spaces(self, indices):
+        return [self.board[i[0]][i[1]] for i in indices]
+
+
+class Indices(object):
+
+    @classmethod
+    def row_indices_for_space(cls, i, j):
         return [(i, k) for k in xrange(9)]
 
+    @classmethod
     def column_indices_for_space(self, i, j):
         return [(k, j) for k in xrange(9)]
 
+    @classmethod
     def nonant_indices_for_space(self, i, j):
         nonant_x = (i / 3) * 3
         nonant_y = (j / 3) * 3
@@ -73,6 +85,3 @@ class Possibilties(object):
             (x, y)
             for x in xrange(nonant_x, nonant_x + 3)
             for y in xrange(nonant_y, nonant_y + 3)]
-
-    def board_spaces(self, indices):
-        return [self.board[i[0]][i[1]] for i in indices]
