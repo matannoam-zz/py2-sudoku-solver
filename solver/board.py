@@ -21,3 +21,9 @@ class Board(object):
 
     def get_list(self, indices):
         return [self.get(*i) for i in indices]
+
+    def get_possibilities(self, i, j):
+        return self.possibilities.get(i, j)
+
+    def related_possibilities_groups(self, i, j):
+        return self.possibilities.related_groups(i, j)

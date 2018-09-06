@@ -12,19 +12,19 @@ class Possibilities(object):
         for i, j in Indices.all():
             self.saved[i][j] = self.updater.get(i, j)
 
-    def get_saved(self, i, j):
+    def get(self, i, j):
         return self.saved[i][j]
 
-    def get_saved_list(self, indices):
-        return [self.get_saved(*i) for i in indices]
+    def get_list(self, indices):
+        return [self.get(*i) for i in indices]
 
-    def groups_for(self, *index):
+    def related_groups(self, *index):
         indicies_groups = [
             Indices.row_indices_without_space(*index),
             Indices.column_indices_without_space(*index),
             Indices.nonant_indices_without_space(*index)]
         return [
-            self.get_saved_list(indices)
+            self.get_list(indices)
             for indices in indicies_groups]
 
 

@@ -1,5 +1,4 @@
 from .board import Board
-from .possibilities import Possibilities
 
 
 class Solver(object):
@@ -31,14 +30,14 @@ class Solver(object):
         return False
 
     def only_digit_possible(self, i, j):
-        digits_possible = self.board.possibilities.get_saved(i, j)
+        digits_possible = self.board.get_possibilities(i, j)
         if len(digits_possible) == 1:
             return digits_possible[0]
         return None
 
     def digit_needed(self, i, j):
-        possibilities_groups = self.board.possibilities.groups_for(i, j)
-        for digit in self.board.possibilities.get_saved(i, j):
+        possibilities_groups = self.board.related_possibilities_groups(i, j)
+        for digit in self.board.get_possibilities(i, j):
             needed = Utilities.missing_from_any(digit, possibilities_groups)
             if needed:
                 return digit
