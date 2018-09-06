@@ -1,6 +1,5 @@
 from copy import deepcopy
 
-from .indices import Indices
 from .possibilities import Possibilties
 
 
@@ -40,20 +39,11 @@ class Solver(object):
         return None
 
     def digit_needed(self, i, j):
-        possibilities_groups = self.possibilties_groups_for(i, j)
+        possibilities_groups = self.possibilities.groups_for(i, j)
         for digit in self.possibilities.get(i, j):
             if not Utilities.in_any_for_all(digit, possibilities_groups):
                 return digit
         return None
-
-    def possibilties_groups_for(self, i, j):
-        indicies_groups = [
-            Indices.row_indices_without_space(i, j),
-            Indices.column_indices_without_space(i, j),
-            Indices.nonant_indices_without_space(i, j)]
-        return [
-            self.possibilities.get_by_list(indices)
-            for indices in indicies_groups]
 
 
 class Utilities(object):

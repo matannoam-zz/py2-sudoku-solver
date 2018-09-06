@@ -33,3 +33,12 @@ class Possibilties(object):
 
     def board_spaces(self, indices):
         return [self.board[i[0]][i[1]] for i in indices]
+
+    def groups_for(self, i, j):
+        indicies_groups = [
+            Indices.row_indices_without_space(i, j),
+            Indices.column_indices_without_space(i, j),
+            Indices.nonant_indices_without_space(i, j)]
+        return [
+            self.get_by_list(indices)
+            for indices in indicies_groups]
