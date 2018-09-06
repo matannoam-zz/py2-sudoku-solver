@@ -41,7 +41,8 @@ class Solver(object):
     def digit_needed(self, i, j):
         possibilities_groups = self.possibilities.groups_for(i, j)
         for digit in self.possibilities.get(i, j):
-            if not Utilities.in_any_for_all(digit, possibilities_groups):
+            needed = not Utilities.in_any_for_all(digit, possibilities_groups)
+            if needed:
                 return digit
         return None
 
