@@ -7,6 +7,7 @@ class Solver(object):
     def __init__(self, board_array):
         self.board = Board(board_array)
         self.possibilities = Possibilties(self.board)
+        self.possibilities.update()
 
     def solve(self):
         changed = True
@@ -28,18 +29,19 @@ class Solver(object):
                 self.digit_needed(i, j))
             if digit:
                 self.board.set(i, j, digit)
+                self.possibilities.update()
                 return True
         return False
 
     def only_digit_possible(self, i, j):
-        possibilities = self.possibilities.get(i, j)
-        if len(possibilities) == 1:
-            return possibilities[0]
+        digits_possible = self.possibilities.get_saved(i, j)
+        if len(digits_possible) == 1:
+            return digits_possible[0]
         return None
 
     def digit_needed(self, i, j):
         possibilities_groups = self.possibilities.groups_for(i, j)
-        for digit in self.possibilities.get(i, j):
+        for digit in self.possibilities.get_saved(i, j):
             needed = Utilities.missing_from_any(digit, possibilities_groups)
             if needed:
                 return digit

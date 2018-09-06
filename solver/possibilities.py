@@ -5,18 +5,35 @@ class Possibilties(object):
 
     def __init__(self, board):
         self.board = board
+        self.saved = [[None] * 9 for i in xrange(9)]
 
-    def get_by_list(self, indices):
-        return [self.get(i[0], i[1]) for i in indices]
+    def update(self):
+        for i, j in Indices.all():
+            self.saved[i][j] = self.get_updated(i, j)
 
-    def get(self, i, j):
-        if self.board.get(i, j):
-            return [self.board.get(i, j)]
+    def get_saved(self, i, j):
+        return self.saved[i][j]
+
+    def get_saved_list(self, indices):
+        return [self.get_saved(*i) for i in indices]
+
+    def groups_for(self, *index):
+        indicies_groups = [
+            Indices.row_indices_without_space(*index),
+            Indices.column_indices_without_space(*index),
+            Indices.nonant_indices_without_space(*index)]
+        return [
+            self.get_saved_list(indices)
+            for indices in indicies_groups]
+
+    def get_updated(self, *index):
+        if self.board.get(*index):
+            return [self.board.get(*index)]
 
         indicies_groups = [
-            Indices.row_indices_for_space(i, j),
-            Indices.column_indices_for_space(i, j),
-            Indices.nonant_indices_for_space(i, j)]
+            Indices.row_indices_for_space(*index),
+            Indices.column_indices_for_space(*index),
+            Indices.nonant_indices_for_space(*index)]
 
         return list(self.missing_from_all(indicies_groups))
 
@@ -33,12 +50,3 @@ class Possibilties(object):
 
     def board_spaces(self, indices):
         return [self.board.get(*i) for i in indices]
-
-    def groups_for(self, i, j):
-        indicies_groups = [
-            Indices.row_indices_without_space(i, j),
-            Indices.column_indices_without_space(i, j),
-            Indices.nonant_indices_without_space(i, j)]
-        return [
-            self.get_by_list(indices)
-            for indices in indicies_groups]

@@ -1,6 +1,13 @@
 class Indices(object):
 
     @classmethod
+    def all(cls):
+        return [
+            (i, j)
+            for i in xrange(9)
+            for j in xrange(9)]
+
+    @classmethod
     def row_indices_for_space(cls, i, j):
         return [(i, k) for k in xrange(9)]
 
