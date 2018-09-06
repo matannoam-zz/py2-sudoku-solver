@@ -52,7 +52,4 @@ class Updater(object):
         one_to_nine = range(1, 10)
         return set(
             digit for digit in one_to_nine
-            if digit not in self.board_spaces(indices))
-
-    def board_spaces(self, indices):
-        return [self.board.get(*i) for i in indices]
+            if digit not in self.board.get_list(indices))

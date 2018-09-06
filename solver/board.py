@@ -14,3 +14,6 @@ class Board(object):
 
     def to_native(self):
         return deepcopy(self.digit_array)
+
+    def get_list(self, indices):
+        return [self.get(*i) for i in indices]
