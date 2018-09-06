@@ -22,22 +22,27 @@ class Solver(object):
     def sets_space(self, i, j):
         if self.board.get(i, j) is None:
             digit = (
-                self.only_digit_possible(i, j) or
-                self.digit_needed(i, j))
+                Steps.only_digit_possible(self.board, i, j) or
+                Steps.digit_needed(self.board, i, j))
             if digit:
                 self.board.set(i, j, digit)
                 return True
         return False
 
-    def only_digit_possible(self, i, j):
-        digits_possible = self.board.get_possibilities(i, j)
+
+class Steps(object):
+
+    @classmethod
+    def only_digit_possible(cls, board, i, j):
+        digits_possible = board.get_possibilities(i, j)
         if len(digits_possible) == 1:
             return digits_possible[0]
         return None
 
-    def digit_needed(self, i, j):
-        possibilities_groups = self.board.related_possibilities_groups(i, j)
-        for digit in self.board.get_possibilities(i, j):
+    @classmethod
+    def digit_needed(cls, board, i, j):
+        possibilities_groups = board.related_possibilities_groups(i, j)
+        for digit in board.get_possibilities(i, j):
             needed = Utilities.missing_from_any(digit, possibilities_groups)
             if needed:
                 return digit
