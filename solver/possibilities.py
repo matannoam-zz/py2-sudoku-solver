@@ -10,8 +10,8 @@ class Possibilties(object):
         return [self.get(i[0], i[1]) for i in indices]
 
     def get(self, i, j):
-        if self.board[i][j]:
-            return [self.board[i][j]]
+        if self.board.get(i, j):
+            return [self.board.get(i, j)]
 
         indicies_groups = [
             Indices.row_indices_for_space(i, j),
@@ -32,7 +32,7 @@ class Possibilties(object):
             if digit not in self.board_spaces(indices))
 
     def board_spaces(self, indices):
-        return [self.board[i[0]][i[1]] for i in indices]
+        return [self.board.get(*i) for i in indices]
 
     def groups_for(self, i, j):
         indicies_groups = [

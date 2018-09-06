@@ -1,12 +1,11 @@
-from copy import deepcopy
-
+from .board import Board
 from .possibilities import Possibilties
 
 
 class Solver(object):
 
-    def __init__(self, board):
-        self.board = deepcopy(board)
+    def __init__(self, board_array):
+        self.board = Board(board_array)
         self.possibilities = Possibilties(self.board)
 
     def solve(self):
@@ -14,7 +13,7 @@ class Solver(object):
         while changed:
             changed = self.changes_one_board_pass()
 
-        return self.board
+        return self.board.to_native()
 
     def changes_one_board_pass(self):
         return any(
@@ -23,12 +22,12 @@ class Solver(object):
             for j in xrange(9))
 
     def sets_space(self, i, j):
-        if self.board[i][j] is None:
+        if self.board.get(i, j) is None:
             digit = (
                 self.only_digit_possible(i, j) or
                 self.digit_needed(i, j))
             if digit:
-                self.board[i][j] = digit
+                self.board.set(i, j, digit)
                 return True
         return False
 
