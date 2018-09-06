@@ -4,12 +4,12 @@ from .indices import Indices
 class Possibilties(object):
 
     def __init__(self, board):
-        self.board = board
         self.saved = [[None] * 9 for i in xrange(9)]
+        self.updater = Updater(board)
 
     def update(self):
         for i, j in Indices.all():
-            self.saved[i][j] = self.get_updated(i, j)
+            self.saved[i][j] = self.updater.get(i, j)
 
     def get_saved(self, i, j):
         return self.saved[i][j]
@@ -26,7 +26,13 @@ class Possibilties(object):
             self.get_saved_list(indices)
             for indices in indicies_groups]
 
-    def get_updated(self, *index):
+
+class Updater(object):
+
+    def __init__(self, board):
+        self.board = board
+
+    def get(self, *index):
         if self.board.get(*index):
             return [self.board.get(*index)]
 
