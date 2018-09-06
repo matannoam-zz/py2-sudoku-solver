@@ -6,6 +6,7 @@ class Possibilities(object):
     def __init__(self, board):
         self.saved = [[None] * 9 for i in xrange(9)]
         self.updater = Updater(board)
+        self.update()
 
     def update(self):
         for i, j in Indices.all():
