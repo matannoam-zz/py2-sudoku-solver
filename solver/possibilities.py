@@ -13,12 +13,12 @@ class Possibilties(object):
         if self.board[i][j]:
             return [self.board[i][j]]
 
-        row_indicies = Indices.row_indices_for_space(i, j)
-        column_indicies = Indices.column_indices_for_space(i, j)
-        nonant_indicies = Indices.nonant_indices_for_space(i, j)
+        indicies_groups = [
+            Indices.row_indices_for_space(i, j),
+            Indices.column_indices_for_space(i, j),
+            Indices.nonant_indices_for_space(i, j)]
 
-        return list(self.missing_from_all(
-            [row_indicies, column_indicies, nonant_indicies]))
+        return list(self.missing_from_all(indicies_groups))
 
     def missing_from_all(self, groups_of_indices):
         missing_from_groups = [
