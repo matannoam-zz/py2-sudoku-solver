@@ -22,26 +22,26 @@ class Solver(object):
 
     def sets_space(self, i, j):
         if self.board[i][j] is None:
-            if (self.sets_board_if_only_one_possible(i, j) or
-                    self.sets_board_if_digit_needed(i, j)):
-                return True
-        return False
-
-    def sets_board_if_only_one_possible(self, i, j):
-        possibilities = self.possibilities.get(i, j)
-        if len(possibilities) == 1:
-            self.board[i][j] = possibilities[0]
-            return True
-        else:
-            return False
-
-    def sets_board_if_digit_needed(self, i, j):
-        possibilities_groups = self.possibilties_groups_for(i, j)
-        for digit in self.possibilities.get(i, j):
-            if not Utilities.in_any_for_all(digit, possibilities_groups):
+            digit = (
+                self.only_digit_possible(i, j) or
+                self.digit_needed(i, j))
+            if digit:
                 self.board[i][j] = digit
                 return True
         return False
+
+    def only_digit_possible(self, i, j):
+        possibilities = self.possibilities.get(i, j)
+        if len(possibilities) == 1:
+            return possibilities[0]
+        return None
+
+    def digit_needed(self, i, j):
+        possibilities_groups = self.possibilties_groups_for(i, j)
+        for digit in self.possibilities.get(i, j):
+            if not Utilities.in_any_for_all(digit, possibilities_groups):
+                return digit
+        return None
 
     def possibilties_groups_for(self, i, j):
         indicies_groups = [
