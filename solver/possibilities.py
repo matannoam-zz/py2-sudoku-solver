@@ -1,7 +1,7 @@
 from .indices import Indices
 
 
-class Possibilties(object):
+class Possibilities(object):
 
     def __init__(self, board):
         self.saved = [[None] * 9 for i in xrange(9)]

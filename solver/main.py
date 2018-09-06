@@ -1,12 +1,12 @@
 from .board import Board
-from .possibilities import Possibilties
+from .possibilities import Possibilities
 
 
 class Solver(object):
 
     def __init__(self, board_array):
         self.board = Board(board_array)
-        self.possibilities = Possibilties(self.board)
+        self.possibilities = Possibilities(self.board)
         self.possibilities.update()
 
     def solve(self):
