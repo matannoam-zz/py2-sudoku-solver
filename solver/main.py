@@ -41,7 +41,7 @@ class Solver(object):
     def digit_needed(self, i, j):
         possibilities_groups = self.possibilities.groups_for(i, j)
         for digit in self.possibilities.get(i, j):
-            needed = not Utilities.in_any_for_all(digit, possibilities_groups)
+            needed = Utilities.missing_from_any(digit, possibilities_groups)
             if needed:
                 return digit
         return None
@@ -53,7 +53,11 @@ class Utilities(object):
         return any(item in items for items in items_groups)
 
     @classmethod
-    def in_any_for_all(cls, item, groups_of_groups):
-        return all(
-            cls.in_any(item, items_groups)
+    def missing_from(cls, item, items_groups):
+        return not cls.in_any(item, items_groups)
+
+    @classmethod
+    def missing_from_any(cls, item, groups_of_groups):
+        return any(
+            cls.missing_from(item, items_groups)
             for items_groups in groups_of_groups)
