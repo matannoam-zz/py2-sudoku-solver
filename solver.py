@@ -44,12 +44,26 @@ class Solver(object):
             Indices.nonant_indices_without_space(i, j))
 
         for digit in self.possibilities.get(i, j):
-            if not (Possibilties.is_digit_in(digit, row_possibilities) and
-                    Possibilties.is_digit_in(digit, column_possibilities) and
-                    Possibilties.is_digit_in(digit, nonant_possiblities)):
+            possibilities_groups = [
+                row_possibilities,
+                column_possibilities,
+                nonant_possiblities]
+            if not Utilities.in_any_for_all(digit, possibilities_groups):
                 self.board[i][j] = digit
                 return True
         return False
+
+
+class Utilities(object):
+    @classmethod
+    def in_any(cls, item, items_groups):
+        return any(item in items for items in items_groups)
+
+    @classmethod
+    def in_any_for_all(cls, item, groups_of_groups):
+        return all(
+            cls.in_any(item, items_groups)
+            for items_groups in groups_of_groups)
 
 
 class Possibilties(object):
@@ -84,10 +98,6 @@ class Possibilties(object):
 
     def board_spaces(self, indices):
         return [self.board[i[0]][i[1]] for i in indices]
-
-    @classmethod
-    def is_digit_in(cls, digit, space_possiblities):
-        return any(digit in p for p in space_possiblities)
 
 
 class Indices(object):
