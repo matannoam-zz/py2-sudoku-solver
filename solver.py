@@ -64,23 +64,23 @@ class Possibilties(object):
         if self.board[i][j]:
             return [self.board[i][j]]
 
-        missing_from_row = self.missing(
-            Indices.row_indices_for_space(i, j))
-        missing_from_column = self.missing(
-            Indices.column_indices_for_space(i, j))
-        missing_from_nonant = self.missing(
-            Indices.nonant_indices_for_space(i, j))
+        row_indicies = Indices.row_indices_for_space(i, j)
+        column_indicies = Indices.column_indices_for_space(i, j)
+        nonant_indicies = Indices.nonant_indices_for_space(i, j)
 
-        return [
-            digit for digit in missing_from_row
-            if digit in missing_from_column and
-            digit in missing_from_nonant]
+        return list(self.missing_from_all(
+            [row_indicies, column_indicies, nonant_indicies]))
+
+    def missing_from_all(self, groups_of_indices):
+        missing_from_groups = [
+            self.missing(indices) for indices in groups_of_indices]
+        return set.intersection(*missing_from_groups)
 
     def missing(self, indices):
         one_to_nine = range(1, 10)
-        return [
+        return set(
             digit for digit in one_to_nine
-            if digit not in self.board_spaces(indices)]
+            if digit not in self.board_spaces(indices))
 
     def board_spaces(self, indices):
         return [self.board[i[0]][i[1]] for i in indices]
