@@ -36,22 +36,21 @@ class Solver(object):
             return False
 
     def sets_board_if_digit_needed(self, i, j):
-        row_possibilities = self.possibilities.get_by_list(
-            Indices.row_indices_without_space(i, j))
-        column_possibilities = self.possibilities.get_by_list(
-            Indices.column_indices_without_space(i, j))
-        nonant_possiblities = self.possibilities.get_by_list(
-            Indices.nonant_indices_without_space(i, j))
-
+        possibilities_groups = self.possibilties_groups_for(i, j)
         for digit in self.possibilities.get(i, j):
-            possibilities_groups = [
-                row_possibilities,
-                column_possibilities,
-                nonant_possiblities]
             if not Utilities.in_any_for_all(digit, possibilities_groups):
                 self.board[i][j] = digit
                 return True
         return False
+
+    def possibilties_groups_for(self, i, j):
+        indicies_groups = [
+            Indices.row_indices_without_space(i, j),
+            Indices.column_indices_without_space(i, j),
+            Indices.nonant_indices_without_space(i, j)]
+        return [
+            self.possibilities.get_by_list(indices)
+            for indices in indicies_groups]
 
 
 class Utilities(object):
