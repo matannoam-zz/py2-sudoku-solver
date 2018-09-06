@@ -9,11 +9,11 @@ class Solver(object):
     def solve(self):
         changed = True
         while changed:
-            changed = self.changes_one_board_pass()
+            changed = self.sets_any_space()
 
         return self.board.to_native()
 
-    def changes_one_board_pass(self):
+    def sets_any_space(self):
         return any(
             self.sets_space(i, j)
             for i in xrange(9)
