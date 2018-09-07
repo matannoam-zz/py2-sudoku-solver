@@ -34,15 +34,15 @@ class Steps(object):
 
     @classmethod
     def only_digit_possible(cls, board, i, j):
-        digits_possible = board.get_possibilities(i, j)
+        digits_possible = board.get_possible(i, j)
         if len(digits_possible) == 1:
             return digits_possible[0]
         return None
 
     @classmethod
     def digit_needed(cls, board, i, j):
-        possibilities_groups = board.related_possibilities_groups(i, j)
-        for digit in board.get_possibilities(i, j):
+        possibilities_groups = board.related_possible_groups(i, j)
+        for digit in board.get_possible(i, j):
             needed = Utilities.missing_from_any(digit, possibilities_groups)
             if needed:
                 return digit
