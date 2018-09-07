@@ -81,3 +81,20 @@ class SolverTests(TestCase):
         partial_solution = deepcopy(initial_board)
         partial_solution[0][0] = 1
         self.assertEqual(solver.solve(), partial_solution)
+
+    def test_avoids_conflict_with_two_spaces(self):
+        initial_board = [
+            [3, None, None, None, None, None, None, None, None],
+            [4, 5, 6, 3, None, None, None, None, None],
+            [7, 8, 9, 5, None, None, None, None, None],
+            [None, None, None, 6, None, None, None, None, None],
+            [None, None, None, 7, None, None, None, None, None],
+            [None, None, None, 8, None, None, None, None, None],
+            [None, None, None, 9, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None],
+            [None, None, None, None, None, None, None, None, None]]
+
+        solver = Solver(initial_board)
+        partial_solution = deepcopy(initial_board)
+        partial_solution[0][3] = 4
+        self.assertEqual(solver.solve(), partial_solution)

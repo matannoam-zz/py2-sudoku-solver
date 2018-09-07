@@ -1,8 +1,7 @@
 from copy import deepcopy
 
-from .possible import PossibleFinder
+from .possible import MissingFinder, ExclusionFinder
 from .digits_array import DigitsArray
-from .indices import Indices
 
 
 class Board(object):
@@ -10,7 +9,8 @@ class Board(object):
     def __init__(self, initial_digits):
         self.answers = deepcopy(initial_digits)
         self.possible = DigitsArray()
-        self.possible_finder = PossibleFinder(self)
+        self.possible_finders = [
+            MissingFinder(self), ExclusionFinder(self.possible)]
         self.update_possibilities()
 
     def get(self, i, j):
@@ -21,9 +21,8 @@ class Board(object):
         self.update_possibilities()
 
     def update_possibilities(self):
-        for i, j in Indices.all():
-            digits = self.possible_finder.get(i, j)
-            self.possible.set(i, j, digits)
+        for finder in self.possible_finders:
+            finder.update()
 
     def to_native(self):
         return deepcopy(self.answers)

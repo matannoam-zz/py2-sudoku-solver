@@ -17,6 +17,12 @@ class Indices(object):
             for i in xrange(9)
             for j in xrange(9)]
 
+    @classmethod
+    def same(cls, indices):
+        return all(
+            cls.of(*index) == cls.of(*indices[0])
+            for index in indices)
+
 
 class Row(Indices):
 

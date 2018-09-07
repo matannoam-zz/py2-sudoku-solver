@@ -1,10 +1,15 @@
-from .indices import Row, Column, Nonant
+from .indices import Row, Column, Nonant, Indices
 
 
-class PossibleFinder(object):
+class MissingFinder(object):
 
     def __init__(self, board):
         self.board = board
+
+    def update(self):
+        for index in Indices.all():
+            digits = self.get(*index)
+            self.board.possible.set(index[0], index[1], digits)
 
     def get(self, *index):
         if self.board.get(*index):
@@ -27,3 +32,38 @@ class PossibleFinder(object):
         return set(
             digit for digit in one_to_nine
             if digit not in self.board.get_list(indices))
+
+
+class ExclusionFinder(object):
+
+    def __init__(self, possible):
+        self.possible = possible
+
+    def update(self):
+        one_to_nine = range(1, 10)
+        for nonant in xrange(9):
+            for digit in one_to_nine:
+                indices = [
+                    index for index in Nonant.indices(nonant)
+                    if digit in self.possible.get(*index)]
+                if len(indices) > 1:
+                    self.remove_possible_row(indices, digit)
+                    self.remove_possible_column(indices, digit)
+
+    def remove_possible_row(self, indices, digit):
+        if Row.same(indices):
+            for index in Row.for_space(*indices[0]):
+                if index not in indices:
+                    self.remove_possible(index[0], index[1], digit)
+
+    def remove_possible_column(self, indices, digit):
+        if Column.same(indices):
+            for index in Column.for_space(*indices[0]):
+                if index not in indices:
+                    self.remove_possible(index[0], index[1], digit)
+
+    def remove_possible(self, i, j, digit):
+        possible = self.possible.get(i, j)
+        if digit in possible:
+            possible.remove(digit)
+        self.possible.set(i, j, possible)
