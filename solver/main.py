@@ -14,10 +14,10 @@ class Solver(object):
         return self.board.to_native()
 
     def sets_any_space(self):
-        return any(
+        return any([
             self.sets_space(i, j)
             for i in xrange(9)
-            for j in xrange(9))
+            for j in xrange(9)])
 
     def sets_space(self, i, j):
         if self.board.get(i, j) is None:
