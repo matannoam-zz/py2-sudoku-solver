@@ -1,4 +1,4 @@
-from .indices import Indices
+from .indices import Indices, Row, Column, Nonant
 
 
 class Possibilities(object):
@@ -20,9 +20,9 @@ class Possibilities(object):
 
     def related_groups(self, *index):
         indicies_groups = [
-            Indices.row_indices_without_space(*index),
-            Indices.column_indices_without_space(*index),
-            Indices.nonant_indices_without_space(*index)]
+            Row.without_space(*index),
+            Column.without_space(*index),
+            Nonant.without_space(*index)]
         return [
             self.get_list(indices)
             for indices in indicies_groups]
@@ -38,9 +38,9 @@ class Updater(object):
             return [self.board.get(*index)]
 
         indicies_groups = [
-            Indices.row_indices_for_space(*index),
-            Indices.column_indices_for_space(*index),
-            Indices.nonant_indices_for_space(*index)]
+            Row.for_space(*index),
+            Column.for_space(*index),
+            Nonant.for_space(*index)]
 
         return list(self.missing_from_all(indicies_groups))
 
